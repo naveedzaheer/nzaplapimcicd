@@ -1,0 +1,41 @@
+extends: ["spectral:oas"]
+
+rules:
+  # Custom rules for API governance
+  operation-description: 
+    description: "Operations must have a description"
+    given: "$.paths.*[?(@.get || @.post || @.put || @.delete || @.patch)]"
+    then:
+      field: "description"
+      function: "truthy"
+  
+  operation-operationId:
+    description: "Operations must have an operationId"
+    given: "$.paths.*[?(@.get || @.post || @.put || @.delete || @.patch)]"
+    then:
+      field: "operationId"
+      function: "truthy"
+  
+  # Ensure all responses have descriptions
+  response-description:
+    description: "All responses must have descriptions"
+    given: "$.paths.*.*.responses.*"
+    then:
+      field: "description"
+      function: "truthy"
+  
+  # Ensure contact information is provided
+  info-contact:
+    description: "API must have contact information"
+    given: "$.info"
+    then:
+      field: "contact"
+      function: "truthy"
+  
+  # Ensure license information is provided
+  info-license:
+    description: "API must have license information"
+    given: "$.info"
+    then:
+      field: "license"
+      function: "truthy"
