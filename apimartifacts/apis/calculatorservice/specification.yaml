@@ -8,6 +8,7 @@ paths:
   /Add:
     post:
       summary: Add
+      description: Add
       operationId: 68c98d76217d20095064eaa4
       requestBody:
         description: ICalculatorService_Add_InputMessage
@@ -32,6 +33,7 @@ paths:
   /Subtract:
     post:
       summary: Subtract
+      description: Subtract
       operationId: 68c98d76217d20095064eaa5
       requestBody:
         description: ICalculatorService_Subtract_InputMessage
@@ -56,6 +58,7 @@ paths:
   /Multiply:
     post:
       summary: Multiply
+      description: Multiply
       operationId: 68c98d76217d20095064eaa6
       requestBody:
         description: ICalculatorService_Multiply_InputMessage
@@ -80,6 +83,7 @@ paths:
   /Divide:
     post:
       summary: Divide
+      description: Divide
       operationId: 68c98d76217d20095064eaa7
       requestBody:
         description: ICalculatorService_Divide_InputMessage
