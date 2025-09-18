@@ -1,6 +1,10 @@
 apimServiceName: nzaplapimpubdemoprod
 namedValues:
-  - name: environment
+  - name: 68c1d7db217d20095064e0b0
     properties:
-      displayName: environment
-      value: "https://www.search2.com"
+      displayName: Logger-Credentials--68c1d7db217d20095064e0b1
+      value: "83d97ff6-46fd-480b-bb55-158d785495b5"
+  - name: nzaplcheckcostfunc-key
+    properties:
+      displayName: nzaplcheckcostfunc-key
+      value: "2E520HNT+bZ92jrxKFvfkqPA0P+zQZv6LcQRQpb7dfn+IKkqcyp2rA=="
