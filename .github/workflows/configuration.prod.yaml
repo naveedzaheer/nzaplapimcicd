@@ -1,0 +1,6 @@
+apimServiceName: nzaplapimpubdemoprod
+namedValues:
+  - name: environment
+    properties:
+      displayName: environment
+      value: "https://www.search2.com"
