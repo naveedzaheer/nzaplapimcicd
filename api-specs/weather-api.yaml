@@ -1,0 +1,294 @@
+openapi: 3.0.1
+info:
+  title: Weather API
+  description: A demo weather API for APIM CI/CD showcase
+  version: '1.0'
+  contact:
+    name: API Support
+    email: support@contoso.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.openweathermap.org/data/2.5
+    description: OpenWeatherMap API server
+
+tags:
+  - name: Weather
+    description: Weather data operations
+
+paths:
+  /weather:
+    get:
+      tags:
+        - Weather
+      summary: Get current weather
+      description: Get current weather data for a specific location
+      operationId: getCurrentWeather
+      parameters:
+        - name: q
+          in: query
+          description: City name, state code and country code divided by comma
+          required: true
+          schema:
+            type: string
+            example: "London,UK"
+        - name: appid
+          in: query
+          description: Your unique API key
+          required: true
+          schema:
+            type: string
+        - name: units
+          in: query
+          description: Units of measurement
+          required: false
+          schema:
+            type: string
+            enum: [standard, metric, imperial]
+            default: standard
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: City not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /forecast:
+    get:
+      tags:
+        - Weather
+      summary: Get weather forecast
+      description: Get 5 day weather forecast with 3 hour intervals
+      operationId: getWeatherForecast
+      parameters:
+        - name: q
+          in: query
+          description: City name, state code and country code divided by comma
+          required: true
+          schema:
+            type: string
+            example: "London,UK"
+        - name: appid
+          in: query
+          description: Your unique API key
+          required: true
+          schema:
+            type: string
+        - name: units
+          in: query
+          description: Units of measurement
+          required: false
+          schema:
+            type: string
+            enum: [standard, metric, imperial]
+            default: standard
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForecastResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: City not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    WeatherResponse:
+      type: object
+      properties:
+        coord:
+          $ref: '#/components/schemas/Coordinates'
+        weather:
+          type: array
+          items:
+            $ref: '#/components/schemas/Weather'
+        base:
+          type: string
+        main:
+          $ref: '#/components/schemas/Main'
+        visibility:
+          type: integer
+        wind:
+          $ref: '#/components/schemas/Wind'
+        clouds:
+          $ref: '#/components/schemas/Clouds'
+        dt:
+          type: integer
+        sys:
+          $ref: '#/components/schemas/Sys'
+        timezone:
+          type: integer
+        id:
+          type: integer
+        name:
+          type: string
+        cod:
+          type: integer
+
+    ForecastResponse:
+      type: object
+      properties:
+        cod:
+          type: string
+        message:
+          type: number
+        cnt:
+          type: integer
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/ForecastItem'
+        city:
+          $ref: '#/components/schemas/City'
+
+    ForecastItem:
+      type: object
+      properties:
+        dt:
+          type: integer
+        main:
+          $ref: '#/components/schemas/Main'
+        weather:
+          type: array
+          items:
+            $ref: '#/components/schemas/Weather'
+        clouds:
+          $ref: '#/components/schemas/Clouds'
+        wind:
+          $ref: '#/components/schemas/Wind'
+        visibility:
+          type: integer
+        pop:
+          type: number
+        dt_txt:
+          type: string
+
+    Coordinates:
+      type: object
+      properties:
+        lon:
+          type: number
+        lat:
+          type: number
+
+    Weather:
+      type: object
+      properties:
+        id:
+          type: integer
+        main:
+          type: string
+        description:
+          type: string
+        icon:
+          type: string
+
+    Main:
+      type: object
+      properties:
+        temp:
+          type: number
+        feels_like:
+          type: number
+        temp_min:
+          type: number
+        temp_max:
+          type: number
+        pressure:
+          type: integer
+        humidity:
+          type: integer
+
+    Wind:
+      type: object
+      properties:
+        speed:
+          type: number
+        deg:
+          type: integer
+
+    Clouds:
+      type: object
+      properties:
+        all:
+          type: integer
+
+    Sys:
+      type: object
+      properties:
+        type:
+          type: integer
+        id:
+          type: integer
+        country:
+          type: string
+        sunrise:
+          type: integer
+        sunset:
+          type: integer
+
+    City:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        coord:
+          $ref: '#/components/schemas/Coordinates'
+        country:
+          type: string
+        population:
+          type: integer
+        timezone:
+          type: integer
+        sunrise:
+          type: integer
+        sunset:
+          type: integer
+
+    ErrorResponse:
+      type: object
+      properties:
+        cod:
+          type: string
+        message:
+          type: string

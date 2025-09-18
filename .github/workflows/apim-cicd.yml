@@ -1,0 +1,92 @@
+name: APIM CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Validate API Specifications
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Install dependencies
+      run: |
+        npm install -g @apidevtools/swagger-cli
+        npm install -g @stoplight/spectral-cli
+    
+    - name: Validate OpenAPI specs
+      run: |
+        for file in api-specs/*.yaml; do
+          if [ -f "$file" ]; then
+            echo "Validating $file"
+            swagger-cli validate "$file"
+            spectral lint "$file" --ruleset api-specs/.spectral.yml || true
+          fi
+        done
+
+  deploy-dev:
+    runs-on: ubuntu-latest
+    name: Deploy to Development
+    needs: validate
+    if: github.ref == 'refs/heads/develop'
+    environment: development
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Deploy APIM Infrastructure
+      run: |
+        az deployment group create \
+          --resource-group rg-apim-dev \
+          --template-file infrastructure/apim.bicep \
+          --parameters @infrastructure/parameters.dev.json
+    
+    - name: Deploy APIs
+      run: |
+        chmod +x scripts/deploy-apis.sh
+        ./scripts/deploy-apis.sh development
+
+  deploy-prod:
+    runs-on: ubuntu-latest
+    name: Deploy to Production
+    needs: validate
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Deploy APIM Infrastructure
+      run: |
+        az deployment group create \
+          --resource-group rg-apim-prod \
+          --template-file infrastructure/apim.bicep \
+          --parameters @infrastructure/parameters.prod.json
+    
+    - name: Deploy APIs
+      run: |
+        chmod +x scripts/deploy-apis.sh
+        ./scripts/deploy-apis.sh production
