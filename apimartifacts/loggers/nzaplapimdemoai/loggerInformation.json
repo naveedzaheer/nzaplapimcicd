@@ -1,0 +1,10 @@
+{
+  "properties": {
+    "loggerType": "applicationInsights",
+    "credentials": {
+      "instrumentationKey": "{{Logger-Credentials--68c1d7db217d20095064e0b1}}"
+    },
+    "isBuffered": true,
+    "resourceId": "/subscriptions/bcdeb3b2-8c3a-4548-8242-e486969cb735/resourceGroups/nzaplapimdemo-rg/providers/microsoft.insights/components/nzaplapimdemoai"
+  }
+}

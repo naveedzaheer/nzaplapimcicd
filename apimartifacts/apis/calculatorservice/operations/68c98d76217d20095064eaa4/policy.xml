@@ -1,0 +1,38 @@
+<policies>
+	<inbound>
+		<base />
+		<set-variable name="requestBodyJson" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
+		<set-variable name="n1" value="@((string)((JObject)context.Variables["requestBodyJson"])["add"]["n1"])" />
+		<set-variable name="n2" value="@((string)((JObject)context.Variables["requestBodyJson"])["add"]["n2"])" />
+		<send-request mode="new" response-variable-name="apiResponse" timeout="20" ignore-error="true">
+			<set-url>@($"https://nzaplapimdemorestcalc.azurewebsites.net/api/Calculator/Add?value1={context.Variables["n1"]}&value2={context.Variables["n2"]}")</set-url>
+			<set-method>GET</set-method>
+		</send-request>
+		<set-variable name="statusCode" value="@(((IResponse)context.Variables["apiResponse"]).StatusCode)" />
+		<set-variable name="responseBody" value="@(((IResponse)context.Variables["apiResponse"]).Body.As<JObject>())" />
+		<set-variable name="addResult" value="@((string)((JObject)context.Variables["responseBody"])["ResultValue"])" />
+		<return-response>
+			<set-status code="@(context.Variables.GetValueOrDefault<int>("statusCode"))" reason="OK" />
+			<set-header name="Content-Type" exists-action="override">
+				<value>application/json</value>
+			</set-header>
+			<set-body template="liquid">
+                {
+                    "addResponse":
+                    {
+                    "addResult": {{context.Variables.addResult}}
+                    }
+                }
+            </set-body>
+		</return-response>
+	</inbound>
+	<outbound>
+		<base />
+	</outbound>
+	<on-error>
+		<base />
+	</on-error>
+	<backend>
+		<base />
+	</backend>
+</policies>

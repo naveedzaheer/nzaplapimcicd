@@ -1,0 +1,18 @@
+{
+  "properties": {
+    "path": "todoapi",
+    "apiRevision": "1",
+    "authenticationSettings": {},
+    "isCurrent": true,
+    "displayName": "TodoAPI v1",
+    "protocols": [
+      "https"
+    ],
+    "serviceUrl": "https://nzaplsimpletodoapipub.azurewebsites.net/",
+    "subscriptionKeyParameterNames": {
+      "header": "Ocp-Apim-Subscription-Key",
+      "query": "subscription-key"
+    },
+    "subscriptionRequired": false
+  }
+}
