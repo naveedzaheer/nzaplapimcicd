@@ -1,0 +1,131 @@
+openapi: 3.0.1
+info:
+  title: TodoAPI v1
+  version: '1.0'
+servers:
+  - url: https://nzaplapimpubdemo.azure-api.net/todoapi
+paths:
+  /todoitems:
+    get:
+      summary: GetTodoitemsAll
+      operationId: GetTodoitemsAll
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Todo'
+              example:
+                - id: 0
+                  name: string
+                  isComplete: true
+    post:
+      summary: PostTodoitems
+      operationId: PostTodoitems
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Todo'
+            example:
+              id: 0
+              name: string
+              isComplete: true
+      responses:
+        '200':
+          description: ''
+  /todoitems/complete:
+    get:
+      summary: GetTodoitemsComplete
+      operationId: GetTodoitemsComplete
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Todo'
+              example:
+                - id: 0
+                  name: string
+                  isComplete: true
+  '/todoitems/{id}':
+    get:
+      summary: GetTodoitems
+      operationId: GetTodoitems
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: ''
+    put:
+      summary: PutTodoitems
+      operationId: PutTodoitems
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Todo'
+            example:
+              id: 0
+              name: string
+              isComplete: true
+      responses:
+        '200':
+          description: ''
+    delete:
+      summary: DeleteTodoitems
+      operationId: DeleteTodoitems
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: ''
+components:
+  schemas:
+    Todo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+        isComplete:
+          type: boolean
+      additionalProperties: false
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+security:
+  - apiKeyHeader: [ ]
+  - apiKeyQuery: [ ]

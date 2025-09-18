@@ -1,0 +1,11 @@
+{
+  "properties": {
+    "displayName": "nzaplcheckcostfunc-key",
+    "secret": true,
+    "tags": [
+      "key",
+      "function",
+      "auto"
+    ]
+  }
+}

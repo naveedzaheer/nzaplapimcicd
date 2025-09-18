@@ -1,0 +1,36 @@
+{
+  "properties": {
+    "loggerId": "/subscriptions/bcdeb3b2-8c3a-4548-8242-e486969cb735/resourceGroups/nzaplapimdemo-rg/providers/Microsoft.ApiManagement/service/nzaplapimpubdemo/loggers/nzaplapimdemoai",
+    "alwaysLog": "allErrors",
+    "backend": {
+      "request": {
+        "dataMasking": {
+          "queryParams": [
+            {
+              "mode": "Hide",
+              "value": "*"
+            }
+          ]
+        }
+      }
+    },
+    "frontend": {
+      "request": {
+        "dataMasking": {
+          "queryParams": [
+            {
+              "mode": "Hide",
+              "value": "*"
+            }
+          ]
+        }
+      }
+    },
+    "httpCorrelationProtocol": "Legacy",
+    "logClientIp": true,
+    "sampling": {
+      "percentage": 100,
+      "samplingType": "fixed"
+    }
+  }
+}

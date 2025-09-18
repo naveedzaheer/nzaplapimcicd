@@ -1,0 +1,189 @@
+openapi: 3.0.1
+info:
+  title: CalculatorService
+  version: '1.0'
+servers:
+  - url: https://nzaplapimpubdemo.azure-api.net/soaptorestcalc
+paths:
+  /Add:
+    post:
+      summary: Add
+      operationId: 68c98d76217d20095064eaa4
+      requestBody:
+        description: ICalculatorService_Add_InputMessage
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Add'
+            example:
+              add:
+                n1: 1
+                n2: 1
+      responses:
+        '200':
+          description: ICalculatorService_Add_OutputMessage
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddResponse'
+              example:
+                addResponse:
+                  addResult: 1
+  /Subtract:
+    post:
+      summary: Subtract
+      operationId: 68c98d76217d20095064eaa5
+      requestBody:
+        description: ICalculatorService_Subtract_InputMessage
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subtract'
+            example:
+              subtract:
+                n1: 1
+                n2: 1
+      responses:
+        '200':
+          description: ICalculatorService_Subtract_OutputMessage
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubtractResponse'
+              example:
+                subtractResponse:
+                  subtractResult: 1
+  /Multiply:
+    post:
+      summary: Multiply
+      operationId: 68c98d76217d20095064eaa6
+      requestBody:
+        description: ICalculatorService_Multiply_InputMessage
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Multiply'
+            example:
+              multiply:
+                n1: 1
+                n2: 1
+      responses:
+        '200':
+          description: ICalculatorService_Multiply_OutputMessage
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MultiplyResponse'
+              example:
+                multiplyResponse:
+                  multiplyResult: 1
+  /Divide:
+    post:
+      summary: Divide
+      operationId: 68c98d76217d20095064eaa7
+      requestBody:
+        description: ICalculatorService_Divide_InputMessage
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Divide'
+            example:
+              divide:
+                n1: 1
+                n2: 1
+      responses:
+        '200':
+          description: ICalculatorService_Divide_OutputMessage
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DivideResponse'
+              example:
+                divideResponse:
+                  divideResult: 1
+components:
+  schemas:
+    Add:
+      type: object
+      properties:
+        add:
+          type: object
+          properties:
+            n1:
+              type: number
+            n2:
+              type: number
+    AddResponse:
+      type: object
+      properties:
+        addResponse:
+          type: object
+          properties:
+            addResult:
+              type: number
+    Subtract:
+      type: object
+      properties:
+        subtract:
+          type: object
+          properties:
+            n1:
+              type: number
+            n2:
+              type: number
+    SubtractResponse:
+      type: object
+      properties:
+        subtractResponse:
+          type: object
+          properties:
+            subtractResult:
+              type: number
+    Multiply:
+      type: object
+      properties:
+        multiply:
+          type: object
+          properties:
+            n1:
+              type: number
+            n2:
+              type: number
+    MultiplyResponse:
+      type: object
+      properties:
+        multiplyResponse:
+          type: object
+          properties:
+            multiplyResult:
+              type: number
+    Divide:
+      type: object
+      properties:
+        divide:
+          type: object
+          properties:
+            n1:
+              type: number
+            n2:
+              type: number
+    DivideResponse:
+      type: object
+      properties:
+        divideResponse:
+          type: object
+          properties:
+            divideResult:
+              type: number
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+security:
+  - apiKeyHeader: [ ]
+  - apiKeyQuery: [ ]

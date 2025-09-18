@@ -1,0 +1,15 @@
+{
+  "properties": {
+    "credentials": {
+      "header": {
+        "x-functions-key": [
+          "{{nzaplcheckcostfunc-key}}"
+        ]
+      }
+    },
+    "description": "nzaplcheckcostfunc",
+    "protocol": "http",
+    "resourceId": "https://management.azure.com/subscriptions/4f083fce-0786-4498-99d3-c40a3f81a360/resourceGroups/nzaplbudgetdemo-rg/providers/Microsoft.Web/sites/nzaplcheckcostfunc",
+    "url": "https://nzaplcheckcostfunc.azurewebsites.net/api"
+  }
+}
