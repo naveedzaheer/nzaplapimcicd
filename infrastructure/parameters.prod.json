@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "apimServiceName": {
+      "value": "apim-demo-prod"
+    },
+    "location": {
+      "value": "East US 2"
+    },
+    "sku": {
+      "value": "Standard"
+    },
+    "publisherEmail": {
+      "value": "admin@contoso.com"
+    },
+    "publisherName": {
+      "value": "Contoso Production"
+    },
+    "environment": {
+      "value": "production"
+    }
+  }
+}

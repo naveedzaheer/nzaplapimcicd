@@ -1,0 +1,220 @@
+{
+  "info": {
+    "_postman_id": "12345678-1234-1234-1234-123456789012",
+    "name": "Weather API - APIM Demo",
+    "description": "Postman collection for testing the Weather API through Azure APIM",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Current Weather",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response has weather data\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('weather');",
+              "    pm.expect(jsonData).to.have.property('main');",
+              "    pm.expect(jsonData).to.have.property('name');",
+              "});",
+              "",
+              "pm.test(\"APIM headers present\", function () {",
+              "    pm.expect(pm.response.headers.get('X-API-Source')).to.eql('Azure APIM');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Ocp-Apim-Subscription-Key",
+            "value": "{{subscription_key}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{apim_base_url}}/weather/weather?q={{city}}&units={{units}}",
+          "host": [
+            "{{apim_base_url}}"
+          ],
+          "path": [
+            "weather",
+            "weather"
+          ],
+          "query": [
+            {
+              "key": "q",
+              "value": "{{city}}"
+            },
+            {
+              "key": "units",
+              "value": "{{units}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Weather Forecast",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response has forecast data\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('list');",
+              "    pm.expect(jsonData).to.have.property('city');",
+              "    pm.expect(jsonData.list).to.be.an('array');",
+              "});",
+              "",
+              "pm.test(\"APIM headers present\", function () {",
+              "    pm.expect(pm.response.headers.get('X-API-Source')).to.eql('Azure APIM');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Ocp-Apim-Subscription-Key",
+            "value": "{{subscription_key}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{apim_base_url}}/weather/forecast?q={{city}}&units={{units}}",
+          "host": [
+            "{{apim_base_url}}"
+          ],
+          "path": [
+            "weather",
+            "forecast"
+          ],
+          "query": [
+            {
+              "key": "q",
+              "value": "{{city}}"
+            },
+            {
+              "key": "units",
+              "value": "{{units}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Rate Limit Test",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200 or 429\", function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 429]);",
+              "});",
+              "",
+              "pm.test(\"Rate limit headers present\", function () {",
+              "    var rateLimitHeaders = ['X-RateLimit-Limit', 'X-RateLimit-Remaining', 'X-RateLimit-Reset'];",
+              "    rateLimitHeaders.forEach(function(header) {",
+              "        if (pm.response.headers.has(header)) {",
+              "            pm.expect(pm.response.headers.get(header)).to.not.be.empty;",
+              "        }",
+              "    });",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Ocp-Apim-Subscription-Key",
+            "value": "{{subscription_key}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{apim_base_url}}/weather/weather?q=London,UK",
+          "host": [
+            "{{apim_base_url}}"
+          ],
+          "path": [
+            "weather",
+            "weather"
+          ],
+          "query": [
+            {
+              "key": "q",
+              "value": "London,UK"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "apim_base_url",
+      "value": "https://apim-demo-dev.azure-api.net",
+      "type": "string"
+    },
+    {
+      "key": "subscription_key",
+      "value": "your-subscription-key-here",
+      "type": "string"
+    },
+    {
+      "key": "city",
+      "value": "London,UK",
+      "type": "string"
+    },
+    {
+      "key": "units",
+      "value": "metric",
+      "type": "string"
+    }
+  ]
+}
